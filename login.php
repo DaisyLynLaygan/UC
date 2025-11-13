@@ -6,40 +6,39 @@ include 'db.php';
         $username = $_POST["userName"];
         $password = $_POST["password"];
 
-        $sql = "SELECT * FROM Registration WHERE userName = '$username' AND password = '$password'";
-        $result = $conn->query($sql); 
+        $sql = "SELECT * FROM registration WHERE userName = '$username' AND password = '$password'";
+        $result = $conn->query($sql);
 
         if($result->num_rows > 0){
             $user = $result->fetch_assoc();
 
             $_SESSION["userName"] = $user["userName"];
             $_SESSION["role"] = $user["role"];
-            
-            //role-based redirection
-        switch($user["role"]){
-            case "admin":
-                header("Location: admin.php");
-                break;
-            case "student":
-                header("Location: student.php");
-                break;
-            case "coach":
-                header("Location: coach.php");
-                break;
-            case "manager":
-                header("Location: manager.php");
-                break;
-            case "dean":
-                header("Location: dean.php");
-                break;
-            default :
-            echo"Invalid role.";
-            break;
-        }
-        exit();
 
+            //role-based redirection
+            switch($user["role"]){
+                case "admin":
+                    header("location: admin.php");
+                    break;
+                case "dean":
+                    header("location: dean.php");
+                    break;
+                case "coach":
+                    header("coach.php");
+                    break;
+                case "manager":
+                    header("location: coach.php");
+                    break;
+                case "student":
+                    header("location: student.php");
+                    break;
+                default :
+                echo"Invalid role.";
+                break;
+            }
+            exit();
         }else{
-            echo "Incorrect username or password.<br>";
+            echo "incorrect username or password.<br>";
         }
     }
 ?>
@@ -52,19 +51,16 @@ include 'db.php';
     <title>Login</title>
 </head>
 <body>
-
-    <h1>Login Page</h1>
+    <h2>Login Page</h2>
     <form method="POST" action="">
         <label>Username:</label><br>
         <input type="text" name="userName" required><br><br>
 
-        <label> Password:</label><br>
+        <label>Password:</label><br>
         <input type="text" name="password" required><br><br>
 
-        <input type="submit" value ="Login">
-    </form>
-    
-    <p>Don't have an account? <a href="index.php">Register here</a></p>
-
+        <input type="submit" value="Login">
+</form>
+<p> Don't have an account? <a href="index.php">Register here</a></p>
 </body>
 </html>
